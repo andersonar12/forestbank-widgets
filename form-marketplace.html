@@ -1,0 +1,292 @@
+<div>
+  <!-- Tools and dependencies -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Vue.js Library -->
+  <script src="https://unpkg.com/vue@2.6.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- HTML - Render -->
+  <div id="credits-widget">
+    <div class="widget">
+      <!-- Precio -->
+      <div class="price d-flex justify-content-between">
+        <p>Precio</p>
+        <div class="text-end" style="width: 185px">
+          <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
+          <span style="font-size: 13px; color: gray"
+            >Cada bono de equivale actualmente a 1 tonelada de CO2
+          </span>
+        </div>
+      </div>
+
+      <hr />
+      <!-- Cantidad  -->
+      <div class="quantity d-flex justify-content-between w-100">
+        <p>Cantidad</p>
+
+        <div class="input-container">
+          <div class="input-group input-group-sm">
+            <button class="btn btn-light" type="button" @click="decrement">--</button>
+
+            <input type="number" v-model="quantity" class="form-control" placeholder="" />
+
+            <button class="btn btn-light" type="button" @click="increment">+</button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- Available Stock  -->
+      <div class="d-flex justify-content-between">
+        <p>Stock disponible</p>
+        <p><span class="">7500</span> UD</p>
+      </div>
+      <hr />
+      <!-- Rates  -->
+      <div class="d-flex justify-content-between">
+        <p>IVA</p>
+        <p v-text="IVA + ' €'"></p>
+      </div>
+      <hr />
+      <!-- Total  -->
+      <div class="d-flex justify-content-between">
+        <p>Total</p>
+        <p><span class="fw-bold text-black" v-text="total"></span> €</p>
+      </div>
+
+      <hr />
+      <!-- Buttons -->
+      <button class="buy-button btn btn-primary d-flex justify-content-between mb-3">
+        <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
+      </button>
+
+      <!-- Reservar -->
+      <button
+        class="contact-button btn btn-outline-primary d-flex justify-content-between"
+        @click="contactAlert()"
+      >
+        <span>Reservar</span> <span>➜</span>
+      </button>
+    </div>
+  </div>
+
+  <iframe
+    id="myIframe"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      z-index: 999999;
+      display: none;
+    "
+  ></iframe>
+  <div></div>
+  <!--Logic  -->
+  <script>
+    // App Principal
+    new Vue({
+      el: "#credits-widget",
+      name: "carbon-credits-widget",
+      data() {
+        return {
+          price: 100,
+          quantity: 1,
+        };
+      },
+
+      methods: {
+        increment() {
+          this.quantity++;
+        },
+        decrement() {
+          if (this.quantity > 1) {
+            this.quantity--;
+          }
+        },
+        contactAlert() {
+          const formComponent = Vue.extend(Vue.component("form-component"));
+          const instance = new formComponent();
+          instance.$mount();
+
+          Swal.fire({
+            title: "Reservar 👋",
+            html: instance.$el,
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+              popup: "custom-modal",
+            },
+          });
+        },
+        // regexEmail: function (email) {
+        //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        //   return regexMail.test(email);
+        // },
+        displayMainFormIframe(params) {
+          var iframe = document.getElementById("myIframe");
+          iframe.src = `https://form.slothmove.com/${params}`;
+          iframe.style.display = "block";
+
+          setTimeout(() => {
+            //Iframe Loaded
+
+            window.onmessage = function (e) {
+              if (typeof e.data === "string" && JSON.parse(e.data).stripe) {
+                top.window.location.href = JSON.parse(e.data).stripe;
+                return;
+              }
+              return;
+            };
+          }, 1000);
+        },
+      },
+      mounted() {},
+      computed: {
+        IVA() {
+          return this.price * this.quantity * 0.21;
+        },
+        total() {
+          return this.price * this.quantity + this.IVA;
+        },
+      },
+      watch: {
+        quantity(value) {
+          if (value < 1) {
+            this.quantity = 1;
+          }
+
+          if (value > 10) {
+            this.quantity = 10;
+          }
+        },
+      },
+    });
+  </script>
+  <!--Logic  -->
+
+  <style>
+    #credits-widget {
+      font-family: Jost !important;
+      font-weight: 400;
+      font-style: normal;
+      color: gray;
+      margin: 20px;
+      font-size: 17px;
+    }
+
+    #credits-widget hr {
+      margin: 1rem 0;
+      color: inherit;
+      border: 0;
+      border-top: 1px solid;
+      opacity: 0.25;
+    }
+
+    #credits-widget p {
+      margin: 0;
+    }
+
+    #credits-widget .widget {
+      padding: 24px;
+      width: 330px;
+      max-width: 330px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
+        0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
+        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    #credits-widget .quantity .input-group {
+      width: 180px;
+    }
+
+    #credits-widget .quantity button {
+      border: 2px solid #d9d9d9 !important;
+      width: 35px;
+    }
+
+    #credits-widget .quantity input {
+      border-top: 2px solid #d9d9d9 !important;
+      border-bottom: 2px solid #d9d9d9 !important;
+      font-size: 20px;
+      color: black;
+    }
+
+    #credits-widget .quantity input[type="number"] {
+      display: inline-block;
+      text-align: center;
+      font-size: 16px !important;
+    }
+
+    #credits-widget .quantity input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    #credits-widget .form-control:focus,
+    .custom-modal .form-control:focus {
+      border-color: #04ab52d0 !important;
+      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
+    }
+
+    #credits-widget .buy-button,
+    #credits-widget .contact-button {
+      width: 100%;
+      height: 48px;
+      font-size: 20px;
+      border-radius: 24px;
+      padding: 8px 16px;
+    }
+
+    /* Modal Styles */
+    .custom-modal {
+      color: black !important;
+      font-family: "Jost", sans-serif !important;
+      max-width: 380px;
+    }
+
+    .custom-modal .swal2-title {
+      color: black !important;
+    }
+
+    .custom-modal .swal2-content {
+      color: #555 !important;
+    }
+
+    .custom-modal .error-message {
+      color: red;
+      font-size: 14px;
+    }
+
+    /* Estilo para los botones */
+    .button-container button {
+      width: 200px;
+      /* height: 40px; */
+      font-size: 20px;
+      border-radius: 24px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .button-container button:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</div>

@@ -1,0 +1,415 @@
+<div>
+  <!-- Tools and dependencies -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Vue.js Library -->
+  <script src="https://unpkg.com/vue@2.6.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- HTML - Render -->
+  <div id="credits-widget">
+    <div class="widget">
+      <!-- Precio -->
+      <div class="price d-flex justify-content-between">
+        <p>Precio</p>
+        <div class="text-end" style="width: 185px">
+          <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
+          <span style="font-size: 13px; color: gray"
+            >Cada bono de equivale actualmente a 1 tonelada de CO2
+          </span>
+        </div>
+      </div>
+
+      <hr />
+      <!-- Cantidad  -->
+      <div class="quantity d-flex justify-content-between w-100">
+        <p>Cantidad</p>
+
+        <div class="input-container">
+          <div class="input-group input-group-sm">
+            <button class="btn btn-light" type="button" @click="decrement">--</button>
+
+            <input type="number" v-model="quantity" class="form-control" placeholder="" />
+
+            <button class="btn btn-light" type="button" @click="increment">+</button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <!-- Available Stock  -->
+      <div class="d-flex justify-content-between">
+        <p>Stock disponible</p>
+        <p><span class="">7500</span> UD</p>
+      </div>
+      <hr />
+      <!-- Rates  -->
+      <div class="d-flex justify-content-between">
+        <p>IVA</p>
+        <p v-text="IVA + ' €'"></p>
+      </div>
+      <hr />
+      <!-- Total  -->
+      <div class="d-flex justify-content-between">
+        <p>Total</p>
+        <p><span class="fw-bold text-black" v-text="total"></span> €</p>
+      </div>
+
+      <hr />
+      <!-- Buttons -->
+      <button class="buy-button btn btn-primary d-flex justify-content-between mb-3">
+        <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
+      </button>
+
+      <!-- Reservar -->
+      <button
+        class="contact-button btn btn-outline-primary d-flex justify-content-between"
+        @click="contactAlert()"
+      >
+        <span>Reservar</span> <span>➜</span>
+      </button>
+    </div>
+  </div>
+  <!--Logic  -->
+  <script>
+    // Formulario de contacto
+    Vue.component("form-component", {
+      template: `
+                <div>
+                  <div class="mb-3">
+                    <label for="email">Email:</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="formData.email"
+                      id="email"
+                      autocomplete="off"
+                    />
+                    <p class="error-message" v-show="errors.email">*Por favor, introduce un correo electrónico valido</p>
+                  </div>
+                  <div class="mb-3">
+                    <label for="nombre">Nombre:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="formData.name"
+                      id="name"
+                      autocomplete="off"
+                    />
+                    <p class="error-message" v-show="errors.name">*Por favor, introduce tu nombre</p>
+                  </div>
+                  <div class="mb-3">
+                    <label for="firstSurname">Primer Apellido:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="formData.firstSurname"
+                      id="firstSurname"
+                      autocomplete="off"
+                    />
+                    <p class="error-message" v-show="errors.firstSurname">*Por favor, introduce tu primer apellido</p>
+                  </div>
+                  <div class="mb-3">
+                    <label for="secondSurname">Segundo Apellido:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="formData.secondSurname"
+                      id="secondSurname"
+                      autocomplete="off"
+                    />
+                    <p class="error-message" v-show="errors.secondSurname">*Por favor, introduce tu segundo apellido</p>
+                  </div>
+                  <div class="mb-3">
+                    <label for="description">Mensaje:</label>
+                    <textarea
+                      class="form-control"
+                      v-model="formData.description"
+                      id="description"
+                      autocomplete="off"
+                    ></textarea>
+                  </div>
+                  <div class="button-container">
+                    <button class="btn btn-primary" @click="handleSubmit">
+                      Enviar
+                      <div v-if="isSending" class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+            `,
+      data() {
+        return {
+          baseUrl: "https://artemisaengine.com",
+          formData: {
+            email: "",
+            name: "",
+            firstSurname: "",
+            secondSurname: "",
+            description: "",
+            requestInformation: true,
+          },
+          errors: { email: "", name: "", firstSurname: "", secondSurname: "" },
+          isSending: false,
+        };
+      },
+      methods: {
+        regexEmail(email) {
+          //Email
+          const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+          return regexMail.test(email);
+        },
+        validateErrors() {
+          // debugger;
+
+          this.errors["email"] = !this.regexEmail(this.formData.email) ? true : false;
+
+          this.errors["name"] = !this.formData.name ? true : false;
+
+          this.errors["firstSurname"] = !this.formData.firstSurname ? true : false;
+
+          this.errors["secondSurname"] = !this.formData.secondSurname ? true : false;
+        },
+        handleSubmit() {
+          this.validateErrors();
+
+          if (Object.values(this.errors).every((e) => e === false)) {
+            // &&  Object.values(this.formData).every((e) => e !== "")
+
+            this.isSending = true;
+            fetch(`${this.baseUrl}/marketplace/postLead`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.formData),
+            })
+              .then((response) => response.text())
+              .then((response) => {
+                console.log(response);
+                if (response === "OK") {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Gracias por tu reserva, nos pondremos en contacto contigo.",
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                      popup: "custom-modal",
+                    },
+                    width: 600,
+                  });
+                } else {
+                  Swal.close();
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              })
+              .finally(() => (this.isSending = false));
+          }
+        },
+        cancel() {
+          Swal.close(); // Cerrar el modal al hacer clic en Cancelar
+        },
+      },
+    });
+
+    // App Principal
+    new Vue({
+      el: "#credits-widget",
+      name: "carbon-credits-widget",
+      data() {
+        return {
+          price: 100,
+          quantity: 1,
+        };
+      },
+
+      methods: {
+        increment() {
+          this.quantity++;
+        },
+        decrement() {
+          if (this.quantity > 1) {
+            this.quantity--;
+          }
+        },
+        contactAlert() {
+          const formComponent = Vue.extend(Vue.component("form-component"));
+          const instance = new formComponent();
+          instance.$mount();
+
+          Swal.fire({
+            title: "Reservar 👋",
+            html: instance.$el,
+            showCancelButton: false,
+            showConfirmButton: false,
+            customClass: {
+              popup: "custom-modal",
+            },
+          });
+        },
+        // regexEmail: function (email) {
+        //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        //   return regexMail.test(email);
+        // },
+        displayMainFormIframe(params) {
+          var iframe = document.getElementById("myIframe");
+          iframe.src = `https://form.slothmove.com/${params}`;
+          iframe.style.display = "block";
+
+          setTimeout(() => {
+            //Iframe Loaded
+
+            window.onmessage = function (e) {
+              if (typeof e.data === "string" && JSON.parse(e.data).stripe) {
+                top.window.location.href = JSON.parse(e.data).stripe;
+                return;
+              }
+              return;
+            };
+          }, 1000);
+        },
+      },
+      mounted() {},
+      computed: {
+        IVA() {
+          return this.price * this.quantity * 0.21;
+        },
+        total() {
+          return this.price * this.quantity + this.IVA;
+        },
+      },
+      watch: {
+        quantity(value) {
+          if (value < 1) {
+            this.quantity = 1;
+          }
+
+          if (value > 10) {
+            this.quantity = 10;
+          }
+        },
+      },
+    });
+  </script>
+  <!--Logic  -->
+
+  <style>
+    #credits-widget {
+      font-family: Jost !important;
+      font-weight: 400;
+      font-style: normal;
+      color: gray;
+      margin: 20px;
+      font-size: 17px;
+    }
+
+    #credits-widget hr {
+      margin: 1rem 0;
+      color: inherit;
+      border: 0;
+      border-top: 1px solid;
+      opacity: 0.25;
+    }
+
+    #credits-widget p {
+      margin: 0;
+    }
+
+    #credits-widget .widget {
+      padding: 24px;
+      width: 330px;
+      max-width: 330px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
+        0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
+        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    #credits-widget .quantity .input-group {
+      width: 180px;
+    }
+
+    #credits-widget .quantity button {
+      border: 2px solid #d9d9d9 !important;
+      width: 35px;
+    }
+
+    #credits-widget .quantity input {
+      border-top: 2px solid #d9d9d9 !important;
+      border-bottom: 2px solid #d9d9d9 !important;
+      font-size: 20px;
+      color: black;
+    }
+
+    #credits-widget .quantity input[type="number"] {
+      display: inline-block;
+      text-align: center;
+      font-size: 16px !important;
+    }
+
+    #credits-widget .quantity input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    #credits-widget .form-control:focus,
+    .custom-modal .form-control:focus {
+      border-color: #04ab52d0 !important;
+      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
+    }
+
+    #credits-widget .buy-button,
+    #credits-widget .contact-button {
+      width: 100%;
+      height: 48px;
+      font-size: 20px;
+      border-radius: 24px;
+      padding: 8px 16px;
+    }
+
+    /* Modal Styles */
+    .custom-modal {
+      color: black !important;
+      font-family: "Jost", sans-serif !important;
+      max-width: 380px;
+    }
+
+    .custom-modal .swal2-title {
+      color: black !important;
+    }
+
+    .custom-modal .swal2-content {
+      color: #555 !important;
+    }
+
+    .custom-modal .error-message {
+      color: red;
+      font-size: 14px;
+    }
+
+    /* Estilo para los botones */
+    .button-container button {
+      width: 200px;
+      /* height: 40px; */
+      font-size: 20px;
+      border-radius: 24px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .button-container button:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</div>
