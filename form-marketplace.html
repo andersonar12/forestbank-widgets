@@ -13,69 +13,161 @@
 
   <!-- Vue.js Library -->
   <script src="https://unpkg.com/vue@2.6.12"></script>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
   <!-- HTML - Render -->
-  <div id="credits-widget">
-    <div class="widget">
-      <!-- Precio -->
-      <div class="price d-flex justify-content-between">
-        <p>Precio</p>
-        <div class="text-end" style="width: 185px">
-          <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
-          <span style="font-size: 13px; color: gray"
-            >Cada bono de equivale actualmente a 1 tonelada de CO2
-          </span>
-        </div>
-      </div>
+  <div id="form-marketplace">
+    <div class="widget container">
+      <div class="row d-flex justify-content-around">
+        <div class="col-12 col-md-7">
+          <div class="form mb-5">
+            <h6 class="text-black">Añade tus datos para recibir el certificado.</h6>
 
-      <hr />
-      <!-- Cantidad  -->
-      <div class="quantity d-flex justify-content-between w-100">
-        <p>Cantidad</p>
+            <!--  <div class="mb-2">
+              <label class="form-label">Yo soy Individual</label>
+              <select class="form-control form-select">
+                <option value="Individual">Individual</option>
+                <option value="Empresa">Empresa</option>
+              </select>
+            </div> -->
 
-        <div class="input-container">
-          <div class="input-group input-group-sm">
-            <button class="btn btn-light" type="button" @click="decrement">--</button>
+            <div class="row mb-2">
+              <div class="col">
+                <label class="form-label">Nombre Contacto</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Apellidos</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
 
-            <input type="number" v-model="quantity" class="form-control" placeholder="" />
+            <div class="row mb-2">
+              <div class="col">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Teléfono</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
 
-            <button class="btn btn-light" type="button" @click="increment">+</button>
+            <div class="row">
+              <div class="col-12 col-sm-6 mb-2">
+                <label class="form-label">Nombre de empresa</label>
+                <input type="email" class="form-control" />
+              </div>
+              <div class="col-12 col-sm-6 mb-2">
+                <label class="form-label">Seleccione el tamaño de la empresa</label>
+                <select class="form-control form-select">
+                  <option value="" disabled selected>Seleccione una opción</option>
+                  <option value="Pequeña (0-50 empleados)">Pequeña (0-50 empleados)</option>
+                  <option value="Mediana (50-200 empleados)">Mediana (50-100 empleados)</option>
+                  <option value="Grande (>200 empleados)">Grande (>200 empleados)</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">NIF/CIF</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Direccion, calle, numero </label>
+              <input type="text" class="form-control" />
+            </div>
+
+            <div class="row mb-2">
+              <div class="col">
+                <label class="form-label">Codigo Postal</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Pais</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <label class="form-label">Provincia</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="col">
+                <label class="form-label">Ciudad</label>
+                <input type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">Generar certificado en otro idioma</label>
+              <select class="form-control form-select">
+                <option value="" disabled selected>Seleccione una opción</option>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+              </select>
+            </div>
+            <div class="mb-2 form-check">
+              <input type="checkbox" class="form-check-input" />
+              <label class="form-check-label">Aceptar terminos y condiciones</label>
+            </div>
+            <div class="py-2">
+              <button class="btn-co2 btn btn-primary">
+                <span>Compensar CO2</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <hr />
-      <!-- Available Stock  -->
-      <div class="d-flex justify-content-between">
-        <p>Stock disponible</p>
-        <p><span class="">7500</span> UD</p>
-      </div>
-      <hr />
-      <!-- Rates  -->
-      <div class="d-flex justify-content-between">
-        <p>IVA</p>
-        <p v-text="IVA + ' €'"></p>
-      </div>
-      <hr />
-      <!-- Total  -->
-      <div class="d-flex justify-content-between">
-        <p>Total</p>
-        <p><span class="fw-bold text-black" v-text="total"></span> €</p>
-      </div>
+        <div class="col" style="max-width: 480px">
+          <div class="details">
+            <div class="item-detail d-flex">
+              <img
+                src="https://forestbank.es/wp-content/uploads/2022/06/forest-bank-logo.png"
+                width="56"
+                height="56"
+              />
 
-      <hr />
-      <!-- Buttons -->
-      <button class="buy-button btn btn-primary d-flex justify-content-between mb-3">
-        <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
-      </button>
+              <div class="ms-3">
+                <p class="fw-bolder text-black text-uppercase mb-2">
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa nihil excepturi,
+                  iure molestiae quidem
+                </p>
+                <div class="d-flex justify-content-between">
+                  <span class="" v-text="itemAmount"></span>
+                  <span class="text-black" v-text="subtotal + ' €'"></span>
+                </div>
+              </div>
+            </div>
+            <hr />
 
-      <!-- Reservar -->
-      <button
-        class="contact-button btn btn-outline-primary d-flex justify-content-between"
-        @click="contactAlert()"
-      >
-        <span>Reservar</span> <span>➜</span>
-      </button>
+            <div class="item-detail d-flex justify-content-between mb-2">
+              <span>Subtotal</span>
+              <span v-text="subtotal + ' €'"></span>
+            </div>
+            <div class="item-detail d-flex justify-content-between mb-2">
+              <span>IVA</span>
+              <span v-text="IVA + ' €'"></span>
+            </div>
+            <hr style="margin-bottom: 35px" />
+
+            <div class="item-detail d-flex justify-content-between mb-3 text-black fw-bolder">
+              <span>Total</span>
+              <span v-text="total + ' €'"></span>
+            </div>
+
+            <div class="py-2">
+              <button class="btn-co2 btn btn-primary">
+                <span>Compensar CO2</span>
+              </button>
+            </div>
+          </div>
+
+          https://forestbank.es/wp-content/uploads/2024/09/tree.png
+          https://forestbank.es/wp-content/uploads/2024/09/car.png
+        </div>
+      </div>
     </div>
   </div>
 
@@ -97,13 +189,13 @@
       display: none;
     "
   ></iframe>
-  <div></div>
+
   <!--Logic  -->
   <script>
     // App Principal
     new Vue({
-      el: "#credits-widget",
-      name: "carbon-credits-widget",
+      el: "#form-marketplace",
+      name: "form-marketplace",
       data() {
         return {
           price: 100,
@@ -112,29 +204,6 @@
       },
 
       methods: {
-        increment() {
-          this.quantity++;
-        },
-        decrement() {
-          if (this.quantity > 1) {
-            this.quantity--;
-          }
-        },
-        contactAlert() {
-          const formComponent = Vue.extend(Vue.component("form-component"));
-          const instance = new formComponent();
-          instance.$mount();
-
-          Swal.fire({
-            title: "Reservar 👋",
-            html: instance.$el,
-            showCancelButton: false,
-            showConfirmButton: false,
-            customClass: {
-              popup: "custom-modal",
-            },
-          });
-        },
         // regexEmail: function (email) {
         //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         //   return regexMail.test(email);
@@ -159,6 +228,12 @@
       },
       mounted() {},
       computed: {
+        itemAmount() {
+          return `${this.price} € x ${this.quantity} tCO2e`;
+        },
+        subtotal() {
+          return this.price * this.quantity;
+        },
         IVA() {
           return this.price * this.quantity * 0.21;
         },
@@ -166,127 +241,64 @@
           return this.price * this.quantity + this.IVA;
         },
       },
-      watch: {
-        quantity(value) {
-          if (value < 1) {
-            this.quantity = 1;
-          }
-
-          if (value > 10) {
-            this.quantity = 10;
-          }
-        },
-      },
+      watch: {},
     });
   </script>
   <!--Logic  -->
 
   <style>
-    #credits-widget {
+    #form-marketplace {
       font-family: Jost !important;
       font-weight: 400;
       font-style: normal;
-      color: gray;
       margin: 20px;
-      font-size: 17px;
+      font-size: 15px;
+      color: gray;
     }
-
-    #credits-widget hr {
-      margin: 1rem 0;
-      color: inherit;
-      border: 0;
-      border-top: 1px solid;
-      opacity: 0.25;
-    }
-
-    #credits-widget p {
-      margin: 0;
-    }
-
-    #credits-widget .widget {
+    #form-marketplace .form {
+      box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+      border-radius: 8px;
       padding: 24px;
-      width: 330px;
-      max-width: 330px;
+      background-color: white;
+    }
+
+    #form-marketplace p {
+      margin: 0;
+      line-height: 1.4 !important;
+    }
+
+    /* #form-marketplace .text-gray {
+      color: gray;
+    } */
+
+    #form-marketplace .form-control:focus {
+      border-color: #04ab52d0 !important;
+      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693) !important;
+    }
+
+    #form-marketplace .btn-co2 {
+      width: 200px;
+      border-radius: 24px;
+      padding: 8px 14px;
+    }
+
+    /* Details */
+
+    #form-marketplace .details {
+      padding: 24px;
+      background-color: white;
       box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
         0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
-        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+      border-radius: 8px !important;
+      font-size: 16px;
+    }
+
+    #form-marketplace .details img {
+      box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 3px 0px rgba(0, 0, 0, 0.12);
       border-radius: 8px;
-    }
-
-    #credits-widget .quantity .input-group {
-      width: 180px;
-    }
-
-    #credits-widget .quantity button {
-      border: 2px solid #d9d9d9 !important;
-      width: 35px;
-    }
-
-    #credits-widget .quantity input {
-      border-top: 2px solid #d9d9d9 !important;
-      border-bottom: 2px solid #d9d9d9 !important;
-      font-size: 20px;
-      color: black;
-    }
-
-    #credits-widget .quantity input[type="number"] {
-      display: inline-block;
-      text-align: center;
-      font-size: 16px !important;
-    }
-
-    #credits-widget .quantity input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-    }
-
-    #credits-widget .form-control:focus,
-    .custom-modal .form-control:focus {
-      border-color: #04ab52d0 !important;
-      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
-    }
-
-    #credits-widget .buy-button,
-    #credits-widget .contact-button {
-      width: 100%;
-      height: 48px;
-      font-size: 20px;
-      border-radius: 24px;
-      padding: 8px 16px;
-    }
-
-    /* Modal Styles */
-    .custom-modal {
-      color: black !important;
-      font-family: "Jost", sans-serif !important;
-      max-width: 380px;
-    }
-
-    .custom-modal .swal2-title {
-      color: black !important;
-    }
-
-    .custom-modal .swal2-content {
-      color: #555 !important;
-    }
-
-    .custom-modal .error-message {
-      color: red;
-      font-size: 14px;
-    }
-
-    /* Estilo para los botones */
-    .button-container button {
-      width: 200px;
-      /* height: 40px; */
-      font-size: 20px;
-      border-radius: 24px;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .button-container button:hover {
-      transform: scale(1.1);
     }
   </style>
 </div>

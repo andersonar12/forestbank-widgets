@@ -13,7 +13,10 @@
 
   <!-- Vue.js Library -->
   <script src="https://unpkg.com/vue@2.6.12"></script>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
   <!-- HTML - Render -->
   <div id="credits-widget">
@@ -262,23 +265,6 @@
         //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         //   return regexMail.test(email);
         // },
-        displayMainFormIframe(params) {
-          var iframe = document.getElementById("myIframe");
-          iframe.src = `https://form.slothmove.com/${params}`;
-          iframe.style.display = "block";
-
-          setTimeout(() => {
-            //Iframe Loaded
-
-            window.onmessage = function (e) {
-              if (typeof e.data === "string" && JSON.parse(e.data).stripe) {
-                top.window.location.href = JSON.parse(e.data).stripe;
-                return;
-              }
-              return;
-            };
-          }, 1000);
-        },
       },
       mounted() {},
       computed: {
