@@ -37,85 +37,117 @@
             <div class="row mb-2">
               <div class="col">
                 <label class="form-label">Nombre Contacto</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.name" />
+                <p class="error-message" v-show="errors.name">*Por favor, introduce tu nombre</p>
               </div>
               <div class="col">
                 <label class="form-label">Apellidos</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.firstSurname" />
+                <p class="error-message" v-show="errors.firstSurname">
+                  *Por favor, introduce tus apellidos
+                </p>
               </div>
             </div>
 
             <div class="row mb-2">
               <div class="col">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" />
+                <input type="email" class="form-control" v-model="formData.email" />
+                <p class="error-message" v-show="errors.email">
+                  *Por favor, introduce un correo electrónico valido
+                </p>
               </div>
               <div class="col">
                 <label class="form-label">Teléfono</label>
-                <input type="text" class="form-control" />
+                <input type="number" class="form-control" v-model="formData.phone" />
+                <p class="error-message" v-show="errors.phone">*Por favor, introduce tu teléfono</p>
               </div>
             </div>
 
             <div class="row">
               <div class="col-12 col-sm-6 mb-2">
                 <label class="form-label">Nombre de empresa</label>
-                <input type="email" class="form-control" />
+                <input type="email" class="form-control" v-model="formData.companyName" />
+                <p class="error-message" v-show="errors.companyName">
+                  *Por favor, introduce el nombre de tu empresa
+                </p>
               </div>
               <div class="col-12 col-sm-6 mb-2">
                 <label class="form-label">Seleccione el tamaño de la empresa</label>
-                <select class="form-control form-select">
+                <select class="form-control form-select" v-model="formData.companySize">
                   <option value="" disabled selected>Seleccione una opción</option>
                   <option value="Pequeña (0-50 empleados)">Pequeña (0-50 empleados)</option>
                   <option value="Mediana (50-200 empleados)">Mediana (50-100 empleados)</option>
                   <option value="Grande (>200 empleados)">Grande (>200 empleados)</option>
                 </select>
+                <p class="error-message" v-show="errors.companySize">
+                  *Por favor, introduce el tamaño de tu empresa
+                </p>
               </div>
             </div>
             <div class="mb-2">
               <label class="form-label">NIF/CIF</label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="formData.photoId" />
+              <p class="error-message" v-show="errors.photoId">*Por favor, introduce tu NIF/CIF</p>
             </div>
             <div class="mb-2">
               <label class="form-label">Direccion, calle, numero </label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="formData.address" />
+              <p class="error-message" v-show="errors.address">
+                *Por favor, introduce tu dirección
+              </p>
             </div>
 
             <div class="row mb-2">
               <div class="col">
                 <label class="form-label">Codigo Postal</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.postcode" />
+                <p class="error-message" v-show="errors.postcode">
+                  *Por favor, introduce tu código postal
+                </p>
               </div>
               <div class="col">
                 <label class="form-label">Pais</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.country" />
+                <p class="error-message" v-show="errors.country">*Por favor, introduce tu pais</p>
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">
                 <label class="form-label">Provincia</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.county" />
+                <p class="error-message" v-show="errors.county">
+                  *Por favor, introduce tu provincia
+                </p>
               </div>
               <div class="col">
                 <label class="form-label">Ciudad</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" v-model="formData.town" />
+                <p class="error-message" v-show="errors.town">*Por favor, introduce tu ciudad</p>
               </div>
             </div>
 
             <div class="mb-2">
               <label class="form-label">Generar certificado en otro idioma</label>
-              <select class="form-control form-select">
+              <select class="form-control form-select" v-model="formData.language">
                 <option value="" disabled selected>Seleccione una opción</option>
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
               </select>
+              <p class="error-message" v-show="errors.language">
+                *Por favor, introduce el idioma de tu certificado
+              </p>
             </div>
             <div class="mb-2 form-check">
               <input type="checkbox" class="form-check-input" />
               <label class="form-check-label">Aceptar terminos y condiciones</label>
             </div>
             <div class="py-2">
-              <button class="btn-co2 btn btn-primary">
-                <span>Compensar CO2</span>
+              <button class="btn-co2 btn btn-primary" @click="handleSubmit">
+                Compensar CO2
+                <div v-if="isSending" class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </button>
             </div>
           </div>
@@ -123,11 +155,7 @@
         <div class="col" style="max-width: 480px">
           <div class="details">
             <div class="item-detail d-flex">
-              <img
-                src="https://forestbank.es/wp-content/uploads/2022/06/forest-bank-logo.png"
-                width="56"
-                height="56"
-              />
+              <img src="https://forestbank.es/wp-content/uploads/2022/06/forest-bank-logo.png" />
 
               <div class="ms-3">
                 <p class="fw-bolder text-black text-uppercase mb-2">
@@ -158,14 +186,46 @@
             </div>
 
             <div class="py-2">
-              <button class="btn-co2 btn btn-primary">
-                <span>Compensar CO2</span>
+              <button class="btn-co2 btn btn-primary" @click="handleSubmit">
+                Compensar CO2
+                <div v-if="isSending" class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
               </button>
             </div>
           </div>
 
-          https://forestbank.es/wp-content/uploads/2024/09/tree.png
-          https://forestbank.es/wp-content/uploads/2024/09/car.png
+          <div class="statistics mt-5">
+            <div class="stats-1 mb-4">
+              <div class="img-container d-flex align-items-center">
+                <img
+                  src="https://forestbank.es/wp-content/uploads/2024/09/tree.png"
+                  class="mx-3"
+                  width="19"
+                />
+                <span class="measures" v-text="calculateEquivalentTrees + '+'"></span>
+              </div>
+
+              <div class="w-50 ps-1">
+                <p>El equivalente a plantar estos árboles</p>
+              </div>
+            </div>
+
+            <div class="stats-2 mb-4">
+              <div class="img-container d-flex align-items-center">
+                <img
+                  src="https://forestbank.es/wp-content/uploads/2024/09/car.png"
+                  class="mx-3"
+                  width="19"
+                />
+                <span class="measures" v-text="calculateKilometersSaved"></span>
+              </div>
+
+              <div class="w-50 ps-1">
+                <p>Kilómetros de coche ahorrados</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -198,16 +258,144 @@
       name: "form-marketplace",
       data() {
         return {
+          baseUrl: "https://artemisaengine.com",
           price: 100,
           quantity: 1,
+          formData: {
+            email: "",
+            name: "",
+            firstSurname: "",
+            secondSurname: "",
+            phone: "",
+            companyName: "",
+            companySize: "",
+            photoId: "", //nif/cif,
+            address: "",
+            postcode: "",
+            country: "",
+            county: "",
+            town: "",
+            numberOfCredits: "",
+            language: "",
+            requestInformation: false,
+          },
+          errors: {
+            email: "",
+            name: "",
+            firstSurname: "",
+            // secondSurname: "",
+            phone: "",
+            companyName: "",
+            companySize: "",
+            photoId: "", //nif/cif,
+            address: "",
+            postcode: "",
+            country: "",
+            county: "",
+            town: "",
+            // numberOfCredits: "",
+            language: "",
+          },
+          isSending: false,
         };
       },
 
       methods: {
-        // regexEmail: function (email) {
-        //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        //   return regexMail.test(email);
-        // },
+        regexEmail(email) {
+          //Email
+          const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+          return regexMail.test(email);
+        },
+        validateErrors() {
+          // debugger;
+
+          this.errors["email"] = !this.regexEmail(this.formData.email) ? true : false;
+
+          this.errors["name"] = !this.formData.name ? true : false;
+
+          this.errors["firstSurname"] = !this.formData.firstSurname ? true : false;
+
+          // this.errors["secondSurname"] = !this.formData.secondSurname ? true : false;
+
+          this.errors["phone"] = !this.formData.phone ? true : false;
+
+          this.errors["companyName"] = !this.formData.companyName ? true : false;
+
+          this.errors["companySize"] = !this.formData.companySize ? true : false;
+
+          this.errors["photoId"] = !this.formData.photoId ? true : false;
+
+          this.errors["address"] = !this.formData.address ? true : false;
+
+          this.errors["postcode"] = !this.formData.postcode ? true : false;
+
+          this.errors["country"] = !this.formData.country ? true : false;
+
+          this.errors["county"] = !this.formData.county ? true : false;
+
+          this.errors["town"] = !this.formData.town ? true : false;
+
+          // this.errors["numberOfCredits"] = !this.formData.numberOfCredits ? true : false;
+          this.errors["language"] = !this.formData.language ? true : false;
+        },
+        redirectToStripe() {
+          let client_reference_id = formData.email
+            .replaceAll("@", "SLOTat12")
+            .replaceAll(".", "SLOTdot13");
+          let params = `?prefilled_email=${formData.email}&locale=es&client_reference_id=${client_reference_id}`;
+
+          let url;
+
+          if (quantity == 1) url = `https://buy.stripe.com/test_dR64iU6rk0qg2K4dQT${params}`;
+          if (quantity == 2) url = `https://buy.stripe.com/test_aEU16I7voeh6doI7sw${params}`;
+          if (quantity == 3) url = `https://buy.stripe.com/test_7sI4iU5nggpedoI149${params}`;
+          if (quantity == 4) url = `https://buy.stripe.com/test_cN26r24jc6OEesM5kq${params}`;
+          if (quantity == 5) url = `https://buy.stripe.com/test_eVa9De6rkfla98s007${params}`;
+          if (quantity == 6) url = `https://buy.stripe.com/test_28oeXybLE0qg3O84go${params}`;
+          if (quantity == 7) url = `https://buy.stripe.com/test_eVa2aM3f8a0Q1G09AJ${params}`;
+          if (quantity == 8) url = `https://buy.stripe.com/test_cN216IbLEgpe3O86oy${params}`;
+          if (quantity == 9) url = `https://buy.stripe.com/test_5kAbLmg1U7SI3O89AL${params}`;
+          if (quantity == 10) url = `https://buy.stripe.com/test_cN29DecPIc8Y4SceV6${params}`;
+
+          window.location.href = url;
+        },
+        handleSubmit() {
+          this.validateErrors();
+
+          if (Object.values(this.errors).every((e) => e === false)) {
+            // &&  Object.values(this.formData).every((e) => e !== "")
+            // console.log(this.formData);
+            this.isSending = true;
+            this.formData.numberOfCredits = `${this.quantity}`;
+
+            fetch(`${this.baseUrl}/marketplace/postLead`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(this.formData),
+            })
+              .then((response) => response.text())
+              .then((response) => {
+                console.log(response);
+                if (response === "OK") {
+                  //Redirec to Stripe
+                  this.redirectToStripe();
+                } else {
+                  Swal.close();
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              })
+              .finally(() => (this.isSending = false));
+          }
+        },
+        cancel() {
+          Swal.close(); // Cerrar el modal al hacer clic en Cancelar
+        },
+        //Iframe
         displayMainFormIframe(params) {
           var iframe = document.getElementById("myIframe");
           iframe.src = `https://form.slothmove.com/${params}`;
@@ -226,7 +414,12 @@
           }, 1000);
         },
       },
-      mounted() {},
+      mounted() {
+        const carbonCredits = Cookies.get("carbon-credits");
+        if (carbonCredits) {
+          this.quantity = Number(carbonCredits);
+        }
+      },
       computed: {
         itemAmount() {
           return `${this.price} € x ${this.quantity} tCO2e`;
@@ -239,6 +432,23 @@
         },
         total() {
           return this.price * this.quantity + this.IVA;
+        },
+        // Function to calculate equivalent trees planted
+        calculateEquivalentTrees() {
+          // Convert tCO2e to kgCO2e
+          const absorptionRate = 167;
+          const kgCO2e = this.quantity * 1000;
+          const trees = kgCO2e / absorptionRate; // Use adjusted rate
+          return Math.ceil(trees);
+        },
+
+        // Function to calculate kilometers of car saved
+        calculateKilometersSaved() {
+          // Convert tCO2e to kgCO2e
+          const emissionRate = 0.095;
+          const kgCO2e = this.quantity * 1000; // Convert tCO2e to kgCO2e
+          const kilometers = kgCO2e / emissionRate;
+          return Math.round(kilometers);
         },
       },
       watch: {},
@@ -268,6 +478,14 @@
       line-height: 1.4 !important;
     }
 
+    #form-marketplace .form-label {
+      margin-bottom: 0 !important;
+    }
+
+    #form-marketplace hr {
+      margin: 1rem 0 !important;
+    }
+
     /* #form-marketplace .text-gray {
       color: gray;
     } */
@@ -275,6 +493,14 @@
     #form-marketplace .form-control:focus {
       border-color: #04ab52d0 !important;
       box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693) !important;
+    }
+
+    #form-marketplace .error-message {
+      color: red;
+      font-size: 14px;
+    }
+    #form-marketplace input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
     }
 
     #form-marketplace .btn-co2 {
@@ -299,6 +525,55 @@
       box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
         0px 1px 3px 0px rgba(0, 0, 0, 0.12);
       border-radius: 8px;
+      height: 56px !important;
+      width: 56px !important;
+      position: initial !important;
+      overflow: initial !important;
+    }
+
+    #form-marketplace .statistics {
+      font-weight: 500;
+    }
+
+    #form-marketplace .statistics .stats-1 {
+      display: flex;
+      max-width: 373px;
+      width: 100%;
+      height: 72px;
+      background-color: #2daa7814;
+      color: #2daa78;
+      border-radius: 10px;
+      min-width: 250px;
+      padding: 18px;
+    }
+
+    #form-marketplace .statistics .stats-2 {
+      display: flex;
+      max-width: 373px;
+      width: 100%;
+      height: 72px;
+      background-color: #0097fc52;
+      color: #344faf;
+      border-radius: 10px;
+      min-width: 250px;
+      padding: 18px;
+    }
+
+    #form-marketplace .statistics .measures {
+      font-size: 24px;
+    }
+    #form-marketplace .statistics .stats-1 .img-container {
+      color: white;
+      background-color: #2daa78;
+      border-radius: 4px;
+      width: 50%;
+      height: 40px;
+    }
+    #form-marketplace .statistics .stats-2 .img-container {
+      color: white;
+      background-color: #344faf;
+      border-radius: 4px;
+      width: 50%;
     }
   </style>
 </div>

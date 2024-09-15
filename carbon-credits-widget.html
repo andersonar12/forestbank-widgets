@@ -68,7 +68,10 @@
 
       <hr />
       <!-- Buttons -->
-      <button class="buy-button btn btn-primary d-flex justify-content-between mb-3">
+      <button
+        class="buy-button btn btn-primary d-flex justify-content-between mb-3"
+        @click="buyCarbonCredits()"
+      >
         <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
       </button>
 
@@ -245,6 +248,10 @@
           if (this.quantity > 1) {
             this.quantity--;
           }
+        },
+        buyCarbonCredits() {
+          Cookies.set("carbon-credits", this.quantity, { expires: 1 });
+          window.location.href = "https://forestbank.es/marketplace/";
         },
         contactAlert() {
           const formComponent = Vue.extend(Vue.component("form-component"));
