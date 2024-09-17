@@ -82,6 +82,8 @@
       >
         <span>Reservar</span> <span>➜</span>
       </button>
+
+      <hr />
     </div>
   </div>
   <!--Logic  -->
@@ -297,7 +299,121 @@
   </script>
   <!--Logic  -->
 
-  <style>
+  <style scoped>
+    #credits-widget {
+      font-family: Jost !important;
+      font-weight: 400;
+      font-style: normal;
+      color: gray;
+      margin: 20px;
+      font-size: 17px;
+
+      hr {
+        margin: 1rem 0;
+        color: inherit;
+        border: 0;
+        border-top: 1px solid;
+        opacity: 0.25;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .widget {
+        padding: 24px;
+        width: 330px;
+        max-width: 330px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
+          0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
+          0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+      }
+
+      .quantity {
+        .input-group {
+          width: 180px;
+        }
+
+        button {
+          border: 2px solid #d9d9d9 !important;
+          width: 35px;
+        }
+
+        input {
+          border-top: 2px solid #d9d9d9 !important;
+          border-bottom: 2px solid #d9d9d9 !important;
+          font-size: 20px;
+          color: black;
+
+          &[type="number"] {
+            display: inline-block;
+            text-align: center;
+            font-size: 16px !important;
+
+            &::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+            }
+          }
+        }
+      }
+
+      .form-control:focus {
+        border-color: #04ab52d0 !important;
+        box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
+      }
+
+      .buy-button,
+      .contact-button {
+        width: 100%;
+        height: 48px;
+        font-size: 20px;
+        border-radius: 24px;
+        padding: 8px 16px;
+      }
+    }
+
+    .custom-modal {
+      color: black !important;
+      font-family: "Jost", sans-serif !important;
+      max-width: 380px;
+
+      .swal2-title {
+        color: black !important;
+      }
+
+      .swal2-content {
+        color: #555 !important;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 14px;
+      }
+
+      .form-control:focus {
+        border-color: #04ab52d0 !important;
+        box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
+      }
+
+      .button-container {
+        button {
+          width: 200px;
+          font-size: 20px;
+          border-radius: 24px;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: transform 0.2s ease-in-out;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  </style>
+
+  <!-- <style scoped>
     #credits-widget {
       font-family: Jost !important;
       font-weight: 400;
@@ -404,5 +520,5 @@
     .button-container button:hover {
       transform: scale(1.1);
     }
-  </style>
+  </style> -->
 </div>

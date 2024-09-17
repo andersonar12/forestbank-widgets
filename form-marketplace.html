@@ -340,23 +340,23 @@
           this.errors["language"] = !this.formData.language ? true : false;
         },
         redirectToStripe() {
-          let client_reference_id = formData.email
+          let client_reference_id = this.formData.email
             .replaceAll("@", "SLOTat12")
             .replaceAll(".", "SLOTdot13");
-          let params = `?prefilled_email=${formData.email}&locale=es&client_reference_id=${client_reference_id}`;
+          let params = `?prefilled_email=${this.formData.email}&locale=es&client_reference_id=${client_reference_id}`;
 
           let url;
 
-          if (quantity == 1) url = `https://buy.stripe.com/test_dR64iU6rk0qg2K4dQT${params}`;
-          if (quantity == 2) url = `https://buy.stripe.com/test_aEU16I7voeh6doI7sw${params}`;
-          if (quantity == 3) url = `https://buy.stripe.com/test_7sI4iU5nggpedoI149${params}`;
-          if (quantity == 4) url = `https://buy.stripe.com/test_cN26r24jc6OEesM5kq${params}`;
-          if (quantity == 5) url = `https://buy.stripe.com/test_eVa9De6rkfla98s007${params}`;
-          if (quantity == 6) url = `https://buy.stripe.com/test_28oeXybLE0qg3O84go${params}`;
-          if (quantity == 7) url = `https://buy.stripe.com/test_eVa2aM3f8a0Q1G09AJ${params}`;
-          if (quantity == 8) url = `https://buy.stripe.com/test_cN216IbLEgpe3O86oy${params}`;
-          if (quantity == 9) url = `https://buy.stripe.com/test_5kAbLmg1U7SI3O89AL${params}`;
-          if (quantity == 10) url = `https://buy.stripe.com/test_cN29DecPIc8Y4SceV6${params}`;
+          if (this.quantity == 1) url = `https://buy.stripe.com/test_dR64iU6rk0qg2K4dQT${params}`;
+          if (this.quantity == 2) url = `https://buy.stripe.com/test_aEU16I7voeh6doI7sw${params}`;
+          if (this.quantity == 3) url = `https://buy.stripe.com/test_7sI4iU5nggpedoI149${params}`;
+          if (this.quantity == 4) url = `https://buy.stripe.com/test_cN26r24jc6OEesM5kq${params}`;
+          if (this.quantity == 5) url = `https://buy.stripe.com/test_eVa9De6rkfla98s007${params}`;
+          if (this.quantity == 6) url = `https://buy.stripe.com/test_28oeXybLE0qg3O84go${params}`;
+          if (this.quantity == 7) url = `https://buy.stripe.com/test_eVa2aM3f8a0Q1G09AJ${params}`;
+          if (this.quantity == 8) url = `https://buy.stripe.com/test_cN216IbLEgpe3O86oy${params}`;
+          if (this.quantity == 9) url = `https://buy.stripe.com/test_5kAbLmg1U7SI3O89AL${params}`;
+          if (this.quantity == 10) url = `https://buy.stripe.com/test_cN29DecPIc8Y4SceV6${params}`;
 
           window.location.href = url;
         },
