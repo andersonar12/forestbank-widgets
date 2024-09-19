@@ -6,10 +6,6 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
     crossorigin="anonymous"
   />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet"
-  />
 
   <!-- Vue.js Library -->
   <script src="https://unpkg.com/vue@2.6.12"></script>
@@ -19,72 +15,111 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
   <!-- HTML - Render -->
-  <div id="credits-widget">
-    <div class="widget">
-      <!-- Precio -->
-      <div class="price d-flex justify-content-between">
-        <p>Precio</p>
-        <div class="text-end" style="width: 185px">
-          <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
-          <span style="font-size: 13px; color: gray"
-            >Cada bono de equivale actualmente a 1 tonelada de CO2
-          </span>
-        </div>
-      </div>
+  <div id="credits-widget" class="container pt-3">
+    <!-- <img
+      src="https://forestbank.es/wp-content/uploads/2024/08/marketplace-proyectos-sumidero-carbono-scaled.jpg"
+      class="w-100"
+      alt=""
+    /> -->
+    <div class="row">
+      <div class="col-12 col-md projects">
+        <div class="project mb-5" v-for="project in projects">
+          <div class="row d-flex d-flex justify-content-md-end justify-content-center">
+            <div class="col-12 col-md img-container">
+              <img class="img-project" :src="project.image" alt="" />
+            </div>
+            <div class="col-12 col-md ps-md-4 d-flex align-items-center">
+              <div>
+                <p class="title fw-bolder" v-text="project.title"></p>
+                <div class="description pb-3">
+                  <p v-text="project.description"></p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <hr />
-      <!-- Cantidad  -->
-      <div class="quantity d-flex justify-content-between w-100">
-        <p>Cantidad</p>
-
-        <div class="input-container">
-          <div class="input-group input-group-sm">
-            <button class="btn btn-light" type="button" @click="decrement">--</button>
-
-            <input type="number" v-model="quantity" class="form-control" placeholder="" />
-
-            <button class="btn btn-light" type="button" @click="increment">+</button>
+          <div class="d-flex justify-content-md-end justify-content-center">
+            <a class="btn btn-primary px-4" :href="project.link">Ver Proyecto</a>
+            <button class="ms-2 btn btn-primary px-4" @click="selectProject(project)">
+              Compensar CO2
+            </button>
           </div>
         </div>
       </div>
-      <hr />
-      <!-- Available Stock  -->
-      <div class="d-flex justify-content-between">
-        <p>Stock disponible</p>
-        <p><span class="">7500</span> UD</p>
-      </div>
-      <hr />
-      <!-- Rates  -->
-      <div class="d-flex justify-content-between">
-        <p>IVA</p>
-        <p v-text="IVA + ' €'"></p>
-      </div>
-      <hr />
-      <!-- Total  -->
-      <div class="d-flex justify-content-between">
-        <p>Total</p>
-        <p><span class="fw-bold text-black" v-text="total"></span> €</p>
-      </div>
+      <!-- Widget -->
+      <div class="col-12 col-md widget">
+        <div class="widget-container" id="floatingBox">
+          <!-- Precio -->
+          <div class="price d-flex justify-content-between">
+            <div>
+              <p>Precio</p>
+              <img
+                v-show="projectSelected"
+                class="img-project"
+                :src="projectSelected && projectSelected.image"
+              />
+            </div>
+            <div class="text-end" style="width: 195px">
+              <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
+              <span style="font-size: 13px; color: gray"
+                >Cada bono de equivale actualmente a 1 tonelada de CO2
+              </span>
+            </div>
+          </div>
 
-      <hr />
-      <!-- Buttons -->
-      <button
-        class="buy-button btn btn-primary d-flex justify-content-between mb-3"
-        @click="buyCarbonCredits()"
-      >
-        <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
-      </button>
+          <hr />
+          <!-- Cantidad  -->
+          <div class="quantity d-flex justify-content-between w-100">
+            <p>Cantidad</p>
 
-      <!-- Reservar -->
-      <button
-        class="contact-button btn btn-outline-primary d-flex justify-content-between"
-        @click="contactAlert()"
-      >
-        <span>Reservar</span> <span>➜</span>
-      </button>
+            <div class="input-container">
+              <div class="input-group input-group-sm">
+                <button class="btn btn-light" type="button" @click="decrement">--</button>
 
-      <hr />
+                <input type="number" v-model="quantity" class="form-control" placeholder="" />
+
+                <button class="btn btn-light" type="button" @click="increment">+</button>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <!-- Available Stock  -->
+          <div class="d-flex justify-content-between">
+            <p>Stock disponible</p>
+            <p><span class="">7500</span> UD</p>
+          </div>
+          <hr />
+          <!-- Rates  -->
+          <div class="d-flex justify-content-between">
+            <p>IVA</p>
+            <p v-text="IVA + ' €'"></p>
+          </div>
+          <hr />
+          <!-- Total  -->
+          <div class="d-flex justify-content-between">
+            <p>Total</p>
+            <p><span class="fw-bold text-black" v-text="total"></span> €</p>
+          </div>
+
+          <hr />
+          <!-- Buttons -->
+          <button class="buy-button btn btn-primary mb-3" @click="buyCarbonCredits()">
+            <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
+          </button>
+
+          <!-- Reservar -->
+          <button class="contact-button btn btn-outline-primary" @click="contactAlert()">
+            <span>Reservar</span> <span>➜</span>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <!-- <img
+      src="https://forestbank.es/wp-content/uploads/2024/08/marketplace-proyectos-sumidero-carbono-scaled.jpg"
+      class="w-100"
+      alt=""
+    /> -->
   </div>
   <!--Logic  -->
   <script>
@@ -239,6 +274,38 @@
         return {
           price: 100,
           quantity: 1,
+          projectSelected: null,
+          projects: [
+            {
+              title: "Mora de Ebro, Tarragona",
+              description:
+                "Bosque IBER-Forest Bank, reforestación en finca de anterior uso agrícola realizada con Pinus halepensis, Prunus amygdalus, Quercus illex, Ceratonia siliqua, Celtis australis y Olea europaea.",
+              image: "https://forestbank.es/wp-content/uploads/2024/02/20231118_132746-scaled.jpg",
+              link: "https://forestbank.es/proyecto-iber-forest-bank/",
+            },
+            {
+              title: "Zeberio, Vizcaya",
+              description:
+                "El proyecto ‘Monte Aretzabaleta’ tiene 6,49 Ha y es una reforestación realizada con Pinus pinaster y Robinia pseudoacacia tras un incendio acaecido en verano de 2022.",
+              image: "https://forestbank.es/wp-content/uploads/2024/06/FB-bilbao42-scaled.jpg",
+              link: "https://forestbank.es/proyecto-monte-aretzabaleta-vizcaya/",
+            },
+            {
+              title: "Lezuza, Albacete",
+              description:
+                "Proyecto ‘Valle de Libisosa. Fase I’. Forestación de 4,4 Ha de tierras agrarias para su cambio de uso a forestal a base de Cedrus atlántica. Créditos Miteco disponibles: 2.996.",
+              image:
+                "https://forestbank.es/wp-content/uploads/2024/03/FOTO-segunda-VALLE-DE-LIBISOSA-FASE-I.jpg",
+              link: "https://forestbank.es/proyecto-valle-del-libisosa-fase-1-albacete/",
+            },
+            {
+              title: "Ossa de Montiel, Albacete",
+              description:
+                "Reforestación realizada con Cedrus atlántica y Eucaliptus camaldulensis en una finca de tierras agrarias con cambio de uso a forestal y 1.588 certificados del MITECO disponibles en 2024.",
+              image: "https://forestbank.es/wp-content/uploads/2024/03/20221006_124213-scaled.jpg",
+              link: "#",
+            },
+          ],
         };
       },
 
@@ -250,6 +317,10 @@
           if (this.quantity > 1) {
             this.quantity--;
           }
+        },
+        selectProject(project) {
+          this.projectSelected = project;
+          Cookies.set("project-selected", JSON.stringify(project), { expires: 1 });
         },
         buyCarbonCredits() {
           Cookies.set("carbon-credits", this.quantity, { expires: 1 });
@@ -274,8 +345,47 @@
         //   const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         //   return regexMail.test(email);
         // },
+        handleScroll() {
+          window.addEventListener("scroll", function () {
+            const floatingBox = document.getElementById("floatingBox");
+            const parentContainer = document.querySelector(".widget");
+
+            // Obtener la posición superior e inferior del contenedor padre
+            const parentRect = parentContainer.getBoundingClientRect();
+            const parentTop = parentRect.top + window.scrollY; // Posición superior del contenedor respecto al documento
+            const parentBottom = parentTop + parentContainer.offsetHeight; // Posición inferior del contenedor respecto al documento
+            const boxHeight = floatingBox.offsetHeight;
+
+            // Calcular el límite inferior para que el cuadro no se mueva fuera del contenedor
+            const limitBottom = parentBottom - boxHeight;
+
+            // Obtener la cantidad de scroll actual
+            const scrollY = window.scrollY;
+
+            // Comenzar a flotar solo cuando la parte superior del contenedor alcance la ventana
+            if (scrollY > parentTop && scrollY < limitBottom) {
+              floatingBox.classList.add("floating-fixed");
+              floatingBox.classList.remove("floating-stopped");
+              floatingBox.style.top = "0"; // Fijar a la parte superior de la ventana
+            }
+            // Detener el cuadro cuando llegue al final del contenedor
+            else if (scrollY >= limitBottom) {
+              floatingBox.classList.remove("floating-fixed");
+              floatingBox.classList.add("floating-stopped");
+              floatingBox.style.top = `${parentBottom - boxHeight - parentTop}px`; // Posicionar en la parte inferior del contenedor
+            }
+            // Volver a la posición original si el scroll es menor a la parte superior del contenedor
+            else {
+              floatingBox.classList.remove("floating-fixed");
+              floatingBox.classList.remove("floating-stopped");
+              floatingBox.style.top = "initial"; // Volver a la posición original
+            }
+          });
+        },
       },
-      mounted() {},
+      mounted() {
+        this.handleScroll();
+      },
       computed: {
         IVA() {
           return this.price * this.quantity * 0.21;
@@ -301,11 +411,10 @@
 
   <style scoped>
     #credits-widget {
-      font-family: Jost !important;
+      font-family: "Roboto", sans-serif !important;
       font-weight: 400;
       font-style: normal;
       color: gray;
-      margin: 20px;
       font-size: 17px;
 
       hr {
@@ -320,62 +429,162 @@
         margin: 0;
       }
 
-      .widget {
-        padding: 24px;
-        width: 330px;
-        max-width: 330px;
-        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
-          0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
-          0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
-        border-radius: 8px;
+      .btn-primary {
+        background-color: #006a32 !important;
+        border-color: #006a32 !important;
+        color: #fff;
       }
 
-      .quantity {
-        .input-group {
-          width: 180px;
-        }
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: #006a32dc !important;
+        border-color: #006a32dc !important;
+      }
 
-        button {
-          border: 2px solid #d9d9d9 !important;
-          width: 35px;
-        }
+      .btn-outline-primary {
+        border-color: #006a32 !important;
+        color: #006a32;
+      }
 
-        input {
-          border-top: 2px solid #d9d9d9 !important;
-          border-bottom: 2px solid #d9d9d9 !important;
-          font-size: 20px;
-          color: black;
+      .btn-outline-primary:hover,
+      .btn-outline-primary:focus {
+        background-color: #006a32 !important;
+        border-color: #006a32 !important;
+        color: #fff;
+      }
 
-          &[type="number"] {
-            display: inline-block;
-            text-align: center;
-            font-size: 16px !important;
+      .projects {
+        /* width: 330px !important; */
+        /* min-width: 330px !important; */
 
-            &::-webkit-inner-spin-button {
-              -webkit-appearance: none;
+        .project {
+          .title {
+            font-size: 28px;
+            color: #006a32;
+          }
+
+          .description {
+            font-size: 17px;
+            color: #7a7a7a;
+          }
+
+          .img-container {
+            max-width: 255px !important;
+
+            .img-project {
+              width: 255px !important;
+              height: 170px !important;
+              max-width: 255px !important;
+              max-height: 170px !important;
+              object-fit: cover !important;
+              /* display: block !important; */
+            }
+          }
+
+          @media (max-width: 991px) {
+            .title,
+            .description {
+              text-align: center;
+            }
+            .img-container {
+              display: flex;
+              justify-content: center;
+              max-width: 100% !important;
             }
           }
         }
       }
 
-      .form-control:focus {
-        border-color: #04ab52d0 !important;
-        box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
-      }
+      .widget {
+        max-width: 350px;
+        position: relative;
 
-      .buy-button,
-      .contact-button {
-        width: 100%;
-        height: 48px;
-        font-size: 20px;
-        border-radius: 24px;
-        padding: 8px 16px;
+        .floating-fixed {
+          position: fixed;
+          top: 0; /* Fijar en la parte superior de la ventana */
+        }
+
+        .floating-stopped {
+          position: absolute;
+          bottom: 0; /* El cuadro flotante se queda en su lugar al final */
+        }
+
+        .widget-container {
+          background-color: #fff;
+          padding: 24px;
+          width: 330px;
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
+            0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
+            0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
+          border-radius: 8px;
+
+          .price {
+            .img-project {
+              box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+                0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+              border-radius: 8px;
+              height: 56px !important;
+              width: 72px !important;
+            }
+          }
+
+          .quantity {
+            .input-group {
+              width: 180px;
+            }
+
+            button {
+              border: 2px solid #d9d9d9 !important;
+              width: 35px;
+            }
+
+            input {
+              border-top: 2px solid #d9d9d9 !important;
+              border-bottom: 2px solid #d9d9d9 !important;
+              font-size: 20px;
+              color: black;
+
+              &[type="number"] {
+                display: inline-block;
+                text-align: center;
+                font-size: 16px !important;
+
+                &::-webkit-inner-spin-button {
+                  -webkit-appearance: none;
+                }
+              }
+            }
+          }
+
+          .form-control:focus {
+            border-color: #04ab52d0 !important;
+            box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
+          }
+
+          .buy-button,
+          .contact-button {
+            width: 100%;
+            height: 48px;
+            font-size: 20px;
+            border-radius: 24px;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+        }
+
+        @media (max-width: 767px) {
+          max-width: 100%;
+          display: flex;
+          justify-content: center;
+        }
       }
     }
 
     .custom-modal {
       color: black !important;
-      font-family: "Jost", sans-serif !important;
+      font-family: "Roboto", sans-serif !important;
       max-width: 380px;
 
       .swal2-title {
@@ -409,116 +618,19 @@
             transform: scale(1.1);
           }
         }
+
+        .btn-primary {
+          background-color: #006a32 !important;
+          border-color: #006a32 !important;
+          color: #fff;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+          background-color: #006a32dc !important;
+          border-color: #006a32dc !important;
+        }
       }
     }
   </style>
-
-  <!-- <style scoped>
-    #credits-widget {
-      font-family: Jost !important;
-      font-weight: 400;
-      font-style: normal;
-      color: gray;
-      margin: 20px;
-      font-size: 17px;
-    }
-
-    #credits-widget hr {
-      margin: 1rem 0;
-      color: inherit;
-      border: 0;
-      border-top: 1px solid;
-      opacity: 0.25;
-    }
-
-    #credits-widget p {
-      margin: 0;
-    }
-
-    #credits-widget .widget {
-      padding: 24px;
-      width: 330px;
-      max-width: 330px;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
-        0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
-        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
-    }
-
-    #credits-widget .quantity .input-group {
-      width: 180px;
-    }
-
-    #credits-widget .quantity button {
-      border: 2px solid #d9d9d9 !important;
-      width: 35px;
-    }
-
-    #credits-widget .quantity input {
-      border-top: 2px solid #d9d9d9 !important;
-      border-bottom: 2px solid #d9d9d9 !important;
-      font-size: 20px;
-      color: black;
-    }
-
-    #credits-widget .quantity input[type="number"] {
-      display: inline-block;
-      text-align: center;
-      font-size: 16px !important;
-    }
-
-    #credits-widget .quantity input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-    }
-
-    #credits-widget .form-control:focus,
-    .custom-modal .form-control:focus {
-      border-color: #04ab52d0 !important;
-      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693);
-    }
-
-    #credits-widget .buy-button,
-    #credits-widget .contact-button {
-      width: 100%;
-      height: 48px;
-      font-size: 20px;
-      border-radius: 24px;
-      padding: 8px 16px;
-    }
-
-    /* Modal Styles */
-    .custom-modal {
-      color: black !important;
-      font-family: "Jost", sans-serif !important;
-      max-width: 380px;
-    }
-
-    .custom-modal .swal2-title {
-      color: black !important;
-    }
-
-    .custom-modal .swal2-content {
-      color: #555 !important;
-    }
-
-    .custom-modal .error-message {
-      color: red;
-      font-size: 14px;
-    }
-
-    /* Estilo para los botones */
-    .button-container button {
-      width: 200px;
-      /* height: 40px; */
-      font-size: 20px;
-      border-radius: 24px;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .button-container button:hover {
-      transform: scale(1.1);
-    }
-  </style> -->
 </div>

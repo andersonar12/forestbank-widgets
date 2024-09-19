@@ -130,8 +130,8 @@
             <div class="mb-2">
               <label class="form-label">Generar certificado en otro idioma</label>
               <select class="form-control form-select" v-model="formData.language">
-                <option value="" disabled selected>Seleccione una opción</option>
-                <option value="es">Español</option>
+                <option value="" disabled>Seleccione una opción</option>
+                <option value="es" selected>Español</option>
                 <option value="en">Inglés</option>
               </select>
               <p class="error-message" v-show="errors.language">
@@ -139,8 +139,8 @@
               </p>
             </div>
             <div class="mb-2 form-check">
-              <input type="checkbox" class="form-check-input" />
-              <label class="form-check-label">Aceptar terminos y condiciones</label>
+              <input type="checkbox" class="form-check-input p-2" />
+              <label class="ms-2 form-check-label">Aceptar terminos y condiciones</label>
             </div>
             <div class="py-2">
               <button class="btn-co2 btn btn-primary" @click="handleSubmit">
@@ -155,13 +155,19 @@
         <div class="col" style="max-width: 480px">
           <div class="details">
             <div class="item-detail d-flex">
-              <img src="https://forestbank.es/wp-content/uploads/2022/06/forest-bank-logo.png" />
+              <img
+                src="https://forestbank.es/wp-content/uploads/2022/06/forest-bank-logo.png"
+                v-show="!projectSelected"
+              />
 
-              <div class="ms-3">
-                <p class="fw-bolder text-black text-uppercase mb-2">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa nihil excepturi,
-                  iure molestiae quidem
-                </p>
+              <img :src="projectSelected && projectSelected.image" v-show="projectSelected" />
+
+              <div class="ms-3 w-100">
+                <p
+                  class="fw-bolder text-black text-uppercase mb-2"
+                  v-text="projectSelected && projectSelected.title"
+                ></p>
+
                 <div class="d-flex justify-content-between">
                   <span class="" v-text="itemAmount"></span>
                   <span class="text-black" v-text="subtotal + ' €'"></span>
@@ -206,7 +212,7 @@
                 <span class="measures" v-text="calculateEquivalentTrees + '+'"></span>
               </div>
 
-              <div class="w-50 ps-1">
+              <div class="w-50 ps-2">
                 <p>El equivalente a plantar estos árboles</p>
               </div>
             </div>
@@ -221,7 +227,7 @@
                 <span class="measures" v-text="calculateKilometersSaved"></span>
               </div>
 
-              <div class="w-50 ps-1">
+              <div class="w-50 ps-2">
                 <p>Kilómetros de coche ahorrados</p>
               </div>
             </div>
@@ -261,6 +267,7 @@
           baseUrl: "https://artemisaengine.com",
           price: 100,
           quantity: 1,
+          projectSelected: null,
           formData: {
             email: "",
             name: "",
@@ -276,7 +283,7 @@
             county: "",
             town: "",
             numberOfCredits: "",
-            language: "",
+            language: "es",
             requestInformation: false,
           },
           errors: {
@@ -369,6 +376,11 @@
             this.isSending = true;
             this.formData.numberOfCredits = `${this.quantity}`;
 
+            if (this.projectSelected) this.formData.action = this.projectSelected["title"];
+
+            // console.log(this.formData);
+            // return;
+
             fetch(`${this.baseUrl}/marketplace/postLead`, {
               method: "POST",
               headers: {
@@ -416,6 +428,11 @@
       },
       mounted() {
         const carbonCredits = Cookies.get("carbon-credits");
+        const project = Cookies.get("project-selected");
+        if (project) {
+          this.projectSelected = JSON.parse(project);
+          console.log(this.projectSelected);
+        }
         if (carbonCredits) {
           this.quantity = Number(carbonCredits);
         }
@@ -458,122 +475,134 @@
 
   <style>
     #form-marketplace {
-      font-family: Jost !important;
+      font-family: "Roboto", sans-serif !important;
       font-weight: 400;
       font-style: normal;
       margin: 20px;
       font-size: 15px;
       color: gray;
-    }
-    #form-marketplace .form {
-      box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-        0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-      border-radius: 8px;
-      padding: 24px;
-      background-color: white;
-    }
 
-    #form-marketplace p {
-      margin: 0;
-      line-height: 1.4 !important;
-    }
+      .form {
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+        padding: 24px;
+        background-color: white;
+      }
 
-    #form-marketplace .form-label {
-      margin-bottom: 0 !important;
-    }
+      p {
+        margin: 0;
+        line-height: 1.4 !important;
+      }
 
-    #form-marketplace hr {
-      margin: 1rem 0 !important;
-    }
+      .form-label {
+        margin-bottom: 0 !important;
+      }
 
-    /* #form-marketplace .text-gray {
-      color: gray;
-    } */
+      hr {
+        margin: 1rem 0 !important;
+      }
 
-    #form-marketplace .form-control:focus {
-      border-color: #04ab52d0 !important;
-      box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693) !important;
-    }
+      .btn-primary {
+        background-color: #006a32 !important;
+        border-color: #006a32 !important;
+        color: #fff;
 
-    #form-marketplace .error-message {
-      color: red;
-      font-size: 14px;
-    }
-    #form-marketplace input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none !important;
-    }
+        &:hover,
+        &:focus {
+          background-color: #006a32dc !important;
+          border-color: #006a32dc !important;
+        }
+      }
 
-    #form-marketplace .btn-co2 {
-      width: 200px;
-      border-radius: 24px;
-      padding: 8px 14px;
-    }
+      .form-control:focus {
+        border-color: #04ab52d0 !important;
+        box-shadow: 0 0 0 0.1rem rgba(0, 106, 50, 0.693) !important;
+      }
 
-    /* Details */
+      .error-message {
+        color: red;
+        font-size: 14px;
+      }
 
-    #form-marketplace .details {
-      padding: 24px;
-      background-color: white;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
-        0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
-        0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
-      border-radius: 8px !important;
-      font-size: 16px;
-    }
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+      }
 
-    #form-marketplace .details img {
-      box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-        0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-      border-radius: 8px;
-      height: 56px !important;
-      width: 56px !important;
-      position: initial !important;
-      overflow: initial !important;
-    }
+      .form-check {
+        display: flex !important;
+        align-items: center !important;
+      }
 
-    #form-marketplace .statistics {
-      font-weight: 500;
-    }
+      .btn-co2 {
+        width: 200px;
+        border-radius: 24px;
+        padding: 8px 14px;
+      }
 
-    #form-marketplace .statistics .stats-1 {
-      display: flex;
-      max-width: 373px;
-      width: 100%;
-      height: 72px;
-      background-color: #2daa7814;
-      color: #2daa78;
-      border-radius: 10px;
-      min-width: 250px;
-      padding: 18px;
-    }
+      .details {
+        padding: 24px;
+        background-color: white;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08), 0 16px 30px rgba(0, 0, 0, 0.08),
+          0 10px 18px rgba(0, 0, 0, 0.08), 0 5px 10px rgba(0, 0, 0, 0.08),
+          0 3px 6px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+        border-radius: 8px !important;
+        font-size: 16px;
 
-    #form-marketplace .statistics .stats-2 {
-      display: flex;
-      max-width: 373px;
-      width: 100%;
-      height: 72px;
-      background-color: #0097fc52;
-      color: #344faf;
-      border-radius: 10px;
-      min-width: 250px;
-      padding: 18px;
-    }
+        img {
+          box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+            0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+          border-radius: 8px;
+          height: 56px !important;
+          width: 56px !important;
+          position: initial !important;
+          overflow: initial !important;
+        }
+      }
 
-    #form-marketplace .statistics .measures {
-      font-size: 24px;
-    }
-    #form-marketplace .statistics .stats-1 .img-container {
-      color: white;
-      background-color: #2daa78;
-      border-radius: 4px;
-      width: 50%;
-      height: 40px;
-    }
-    #form-marketplace .statistics .stats-2 .img-container {
-      color: white;
-      background-color: #344faf;
-      border-radius: 4px;
-      width: 50%;
+      .statistics {
+        font-weight: 500;
+
+        .stats-1,
+        .stats-2 {
+          display: flex;
+          max-width: 373px;
+          width: 100%;
+          height: 72px;
+          border-radius: 10px;
+          min-width: 250px;
+          padding: 18px;
+
+          &.stats-1 {
+            background-color: #2daa7814;
+            color: #2daa78;
+
+            .img-container {
+              color: white;
+              background-color: #2daa78;
+              border-radius: 4px;
+              width: 45%;
+              height: 40px;
+            }
+          }
+
+          &.stats-2 {
+            background-color: #0097fc52;
+            color: #344faf;
+
+            .img-container {
+              color: white;
+              background-color: #344faf;
+              border-radius: 4px;
+              width: 45%;
+            }
+          }
+        }
+
+        .measures {
+          font-size: 24px;
+        }
+      }
     }
   </style>
 </div>
