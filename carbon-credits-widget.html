@@ -232,7 +232,14 @@
           if (Object.values(this.errors).every((e) => e === false)) {
             // &&  Object.values(this.formData).every((e) => e !== "")
 
+            const project = Cookies.get("project-selected");
+
+            if (project) {
+              this.formData["projectName"] = JSON.parse(project).title;
+            }
+
             this.isSending = true;
+
             fetch(`${this.baseUrl}/marketplace/postLead`, {
               method: "POST",
               headers: {
