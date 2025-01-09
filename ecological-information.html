@@ -1,0 +1,377 @@
+<div>
+  <!-- Tools and dependencies -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Vue.js Library -->
+  <script src="https://unpkg.com/vue@2.6.12"></script>
+
+  <!-- Scripts -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+  <!-- HTML - Render -->
+  <div id="ecological-information">
+    <img :src="urlImg + 'border-top.png'" class="img-fluid" alt="..." />
+
+    <!-- Imagen principal -->
+    <div class="main-image-container">
+      <img :src="urlImg + 'main-image.jpg'" class="main-image img-fluid" alt="Imagen principal" />
+      <img :src="urlImg + 'forest-bank-logo-white.png'" class="logo" alt="Logo" />
+    </div>
+
+    <!-- Titulo -->
+    <div class="title">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>Project 1</h1>
+            <h1>Valle del Libiosa</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <!-- <div class="col" style="max-width: 840px"> -->
+        <div class="col">
+          <div class="divider"></div>
+
+          <div class="description-container">
+            <div class="description-content" ref="content" :style="{ height: contentHeight }">
+              Reforestación de una zona quemada con Pseudotsuga menziesii en Chao do Grou.
+              Restauración de la masa forestal preexistente, mejora del ecosistema y valorización
+              paisajística de la zona. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Atque inventore sequi, incidunt itaque quae ea illo optio enim. Amet assumenda maiores
+              nulla error delectus nesciunt porro illo ratione quod a? Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Atque inventore sequi, incidunt itaque quae ea illo
+              optio enim. Amet assumenda maiores nulla error delectus nesciunt porro illo ratione
+              quod a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque inventore
+              sequi, incidunt itaque quae ea illo optio enim. Amet assumenda maiores nulla error
+              delectus nesciunt porro illo ratione quod a? Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Atque inventore sequi, incidunt itaque quae ea illo optio enim. Amet
+              assumenda maiores nulla error delectus nesciunt porro illo ratione quod a? Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Atque inventore sequi, incidunt itaque
+              quae ea illo optio enim. Amet assumenda maiores nulla error delectus nesciunt porro
+              illo ratione quod a?
+            </div>
+            <button
+              class="toggle-btn"
+              v-html="isExpanded ? '−' : '+'"
+              @click="toggleDescription"
+            ></button>
+            <!-- <div class="d-flex justify-content-end">
+            </div> -->
+          </div>
+
+          <div class="row mt-5 d-flex justify-content-center">
+            <!-- Localización -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-4">
+                <img :src="urlImg + 'marker.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Localización</h6>
+                  <p>
+                    As Pontes de García Rodríguez, Coruña, (Galicia) España. 43°28'44"N 7°53'05"W
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Area -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-3">
+                <img :src="urlImg + 'people.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Area</h6>
+                  <ul>
+                    <li>11,6 Не.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Registro/Permanencia -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-4">
+                <img :src="urlImg + 'carpet.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Registro/Permanencia</h6>
+                  <ul>
+                    <li>Miteco: 2023-b113.</li>
+
+                    <li>35 años.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Especies -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-3">
+                <img :src="urlImg + 'tree.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Especies</h6>
+                  <ul>
+                    <li>Pseudotsuga menziesii: 100%.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Creditos de Carbono -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-4">
+                <img :src="urlImg + 'heards-gear.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Creditos de Carbono</h6>
+                  <ul>
+                    <li>7.915 Créditos disponibles ahora.</li>
+                    <li>43.528 Créditos disponibles entre 2028 y 2058.</li>
+                    <li>El mantenimiento de este proyecto está garantizado por el promotor.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Precios -->
+            <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-3">
+                <img :src="urlImg + 'currency.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">Precios*</h6>
+                  <ul>
+                    <li>
+                      €46 por unidad, creditos disponibles.
+                      <p class="mb-0 fw-bolder indicators">*+VAT</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- DSG'S alcanzados -->
+            <!-- <div class="col-12 col-md-6">
+              <div class="info-item d-flex mb-3">
+                <img :src="urlImg + 'ods-logo.png'" class="logo" alt="..." />
+                <div class="ms-3">
+                  <h6 class="fw-bolder subtitle">DSG'S alcanzados</h6>
+                  <ul>
+                    <li>
+                      1/3 Indicadores
+                      <p class="mb-1 indicators">
+                        Reducción anual de la concentración de partículas (ug/m3)
+                      </p>
+                    </li>
+                    <li>
+                      2/3 Indicadores
+                      <p class="mb-1 indicators">
+                        Emisiones de CO2 per cápita relacionadas con la energía
+                      </p>
+                      <p class="mb-1 indicators">Vulnerabilidad al cambio climático (0-1)</p>
+                    </li>
+
+                    <li>
+                      3/3 Indicadores
+                      <p class="mb-1 indicators">Lista roja de supervivencia de especies (0-1)</p>
+                      <p class="mb-1 indicators">Variación anual de la superficie forestal (%)</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- <div class="row mt-5"></div> -->
+        </div>
+        <p />
+      </div>
+    </div>
+    <img :src="urlImg + 'border-bottom.png'" class="img-fluid" alt="..." />
+  </div>
+
+  <!--Logic  -->
+  <script>
+    // App Principal
+    new Vue({
+      el: "#ecological-information",
+      name: "ecological-information",
+      data() {
+        return {
+          baseUrl: "https://artemisaengine.com",
+          urlImg: "https://forestbank.es/wp-content/uploads/2025/01/",
+          isExpanded: false,
+          contentHeight: "100px",
+        };
+      },
+      methods: {
+        toggleDescription() {
+          const content = this.$refs.content;
+          if (!this.isExpanded) {
+            // Expandir al altura real del contenido
+            this.contentHeight = content.scrollHeight + "px";
+          } else {
+            // Colapsar a la altura inicial
+            this.contentHeight = "100px";
+          }
+          this.isExpanded = !this.isExpanded;
+        },
+      },
+      mounted() {
+        // Asegurarnos de que el contenido este a 100px de altura
+        this.$nextTick(() => {
+          this.contentHeight = "100px";
+        });
+      },
+      computed: {},
+      watch: {},
+    });
+  </script>
+  <!--Logic  -->
+
+  <style>
+    #ecological-information {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      ul,
+      li {
+        font-family: "Montserrat", sans-serif !important;
+      }
+      font-family: "Montserrat", sans-serif !important;
+
+      font-weight: 400;
+      font-style: normal;
+      font-size: 22px;
+      color: white;
+      background-color: #114414;
+      /* padding-top: 125px;
+      padding-bottom: 50px; */
+
+      .title {
+        background-color: #6dc08e;
+        h1 {
+          text-transform: uppercase;
+
+          font-weight: bold;
+          font-size: clamp(2rem, 5vw, 5rem); /* Mínimo 2rem, preferido 5vw, máximo 4rem */
+        }
+        padding-top: 15px;
+        padding-bottom: 30px;
+      }
+
+      .divider {
+        height: 0.5rem; /* Ajusta el grosor */
+        background-color: white;
+        width: 15%; /* Ancho relativo al contenedor */
+        /* O puedes usar: width: clamp(80px, 15%, 150px); para tener límites */
+        margin: 2.5rem 0;
+      }
+
+      .description-container {
+        display: grid;
+        grid-template-columns: 1fr 40px;
+        gap: 10px;
+      }
+
+      .description-content {
+        color: white;
+        overflow: hidden;
+        transition: height 0.3s ease-out;
+        grid-column: 1;
+      }
+
+      .toggle-btn {
+        grid-column: 2;
+        align-self: end; /* Alinea con la última línea */
+        background: none;
+        border: 2px solid white;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 38px;
+        padding: 0;
+        line-height: 1;
+        margin-bottom: 5px; /* Ajusta según necesites */
+      }
+
+      .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .main-image-container {
+        position: relative;
+        width: 100%;
+        .main-image {
+          width: 100%;
+          height: auto;
+        }
+
+        .logo {
+          position: absolute;
+          top: 45px; /* Ajusta la distancia desde arriba */
+          left: 32px; /* Ajusta la distancia desde la izquierda */
+          width: 210px; /* Ajusta el tamaño del logo */
+          height: auto;
+          z-index: 1;
+        }
+
+        /* Media query para ajustar el tamaño del logo en pantallas pequeñas */
+        @media (max-width: 768px) {
+          .logo {
+            top: 20px; /* Ajusta la distancia desde arriba */
+            left: 20px; /* Ajusta la distancia desde la izquierda */
+            width: 120px;
+          }
+        }
+      }
+
+      .info-item {
+        .ms-3 {
+          /* overflow-wrap: break-word; */
+          word-wrap: break-word;
+        }
+        .subtitle {
+          font-size: 26px;
+          width: 100%;
+          white-space: normal !important; /* Fuerza el salto de línea */
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+        }
+        p,
+        ul {
+          font-size: 19px;
+        }
+        ul {
+          padding-left: 1rem;
+        }
+
+        .indicators {
+          font-size: 15px;
+        }
+
+        .logo {
+          height: 50px !important;
+          width: 50px !important;
+          min-width: 50px !important;
+        }
+      }
+    }
+  </style>
+</div>
