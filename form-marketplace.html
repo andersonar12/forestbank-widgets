@@ -170,10 +170,11 @@
               <img :src="projectSelected && projectSelected.image" v-show="projectSelected" />
 
               <div class="ms-3 w-100">
-                <p
+                <span
                   class="fw-bolder text-black text-uppercase mb-2"
-                  v-text="projectSelected && projectSelected.title"
-                ></p>
+                  style="font-size: 16px !important"
+                  v-html="projectSelected && projectSelected.title"
+                ></span>
 
                 <div class="d-flex justify-content-between">
                   <span class="" v-text="itemAmount"></span>
@@ -272,7 +273,7 @@
       data() {
         return {
           baseUrl: "https://artemisaengine.com",
-          price: 100,
+          price: 150,
           quantity: 1,
           projectSelected: null,
           formData: {
@@ -573,7 +574,7 @@
         },
       },
       mounted() {
-        const carbonCredits = Cookies.get("carbon-credits");
+        let carbonCredits = Cookies.get("carbon-credits");
         const project = Cookies.get("project-selected");
         if (project) {
           this.projectSelected = JSON.parse(project);
@@ -581,6 +582,19 @@
         }
         if (carbonCredits) {
           this.quantity = Number(carbonCredits);
+
+          // Lógica de precios según rango
+          if (this.quantity >= 1 && this.quantity <= 5) {
+            this.price = 150;
+          } else if (this.quantity >= 6 && this.quantity <= 10) {
+            this.price = 120;
+          } else if (this.quantity >= 11 && this.quantity <= 20) {
+            this.price = 100;
+          } else if (this.quantity >= 21 && this.quantity <= 50) {
+            this.price = 90;
+          } else if (this.quantity >= 51 && this.quantity <= 100) {
+            this.price = 80;
+          }
         }
       },
       computed: {
@@ -591,7 +605,8 @@
           return this.price * this.quantity;
         },
         IVA() {
-          return this.price * this.quantity * 0.21;
+          const iva = this.price * this.quantity * 0.21; // 21% IVA
+          return parseFloat(iva.toFixed(2));
         },
         total() {
           return this.price * this.quantity + this.IVA;

@@ -24,7 +24,7 @@
 
     <!-- Imagen principal -->
     <div class="main-image-container">
-      <img :src="urlImg + 'main-image.jpg'" class="main-image img-fluid" alt="Imagen principal" />
+      <img src="{{imagen_principal}}" class="main-image img-fluid" alt="Imagen principal" />
       <img :src="urlImg + 'forest-bank-logo-white.png'" class="logo" alt="Logo" />
     </div>
 
@@ -32,10 +32,7 @@
     <div class="title">
       <div class="container">
         <div class="row">
-          <div class="col project-name">
-            <h1>Project 1</h1>
-            <h1>Valle del Libiosa</h1>
-          </div>
+          <div class="col project-name">{{cabezera_titulo|raw}}</div>
         </div>
       </div>
     </div>
@@ -48,21 +45,7 @@
 
           <div class="description-container">
             <div class="description-content" ref="content" :style="{ height: contentHeight }">
-              Reforestación de una zona quemada con Pseudotsuga menziesii en Chao do Grou.
-              Restauración de la masa forestal preexistente, mejora del ecosistema y valorización
-              paisajística de la zona. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Atque inventore sequi, incidunt itaque quae ea illo optio enim. Amet assumenda maiores
-              nulla error delectus nesciunt porro illo ratione quod a? Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Atque inventore sequi, incidunt itaque quae ea illo
-              optio enim. Amet assumenda maiores nulla error delectus nesciunt porro illo ratione
-              quod a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque inventore
-              sequi, incidunt itaque quae ea illo optio enim. Amet assumenda maiores nulla error
-              delectus nesciunt porro illo ratione quod a? Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Atque inventore sequi, incidunt itaque quae ea illo optio enim. Amet
-              assumenda maiores nulla error delectus nesciunt porro illo ratione quod a? Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Atque inventore sequi, incidunt itaque
-              quae ea illo optio enim. Amet assumenda maiores nulla error delectus nesciunt porro
-              illo ratione quod a?
+              {{descripcion|raw}}
             </div>
             <button
               class="toggle-btn"
@@ -82,10 +65,7 @@
                     <img :src="urlImg + 'marker.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Localización</h6>
-                      <p>
-                        As Pontes de García Rodríguez, Coruña, (Galicia) España. 43°28'44"N
-                        7°53'05"W
-                      </p>
+                      <p>{{localizacion|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -96,9 +76,7 @@
                     <img :src="urlImg + 'people.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Area</h6>
-                      <ul>
-                        <li>11,6 Не.</li>
-                      </ul>
+                      <p>{{area|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -109,11 +87,7 @@
                     <img :src="urlImg + 'carpet.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Registro</h6>
-                      <ul>
-                        <li>Miteco: 2023-b113.</li>
-
-                        <li>35 años.</li>
-                      </ul>
+                      <p>{{registro_permanencia|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -124,9 +98,7 @@
                     <img :src="urlImg + 'tree.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Especies</h6>
-                      <ul>
-                        <li>Pseudotsuga menziesii: 100%.</li>
-                      </ul>
+                      <p>{{especies|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -136,11 +108,7 @@
                     <img :src="urlImg + 'heards-gear.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Créditos de carbono</h6>
-                      <ul>
-                        <li>7.915 Créditos disponibles ahora.</li>
-                        <li>43.528 Créditos disponibles entre 2028 y 2058.</li>
-                        <li>El mantenimiento de este proyecto está garantizado por el promotor.</li>
-                      </ul>
+                      <p>{{creditos_de_carbono|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -151,12 +119,7 @@
                     <img :src="urlImg + 'currency.png'" class="logo" alt="..." />
                     <div class="ms-3">
                       <h6 class="fw-bolder subtitle">Precios*</h6>
-                      <ul>
-                        <li>
-                          €46 por unidad, creditos disponibles.
-                          <p class="mb-0 fw-bolder indicators">*+VAT</p>
-                        </li>
-                      </ul>
+                      <p>{{precios|raw}}</p>
                     </div>
                   </div>
                 </div>
@@ -280,70 +243,70 @@
             instanceId: String, // Cambiamos widgetId por instanceId para evitar conflictos
           },
           template: `
-      <div :id="'form-' + instanceId">
-        <div class="mb-3">
-          <label :for="'email-' + instanceId">Email:</label>
-          <input
-            type="email"
-            class="form-control"
-            v-model="formData.email"
-            :id="'email-' + instanceId"
-            autocomplete="off"
-          />
-          <p class="error-message" v-show="errors.email">*Por favor, introduce un correo electrónico valido</p>
+  <div :id="'form-' + instanceId">
+    <div class="mb-3">
+      <label :for="'email-' + instanceId">Email:</label>
+      <input
+        type="email"
+        class="form-control"
+        v-model="formData.email"
+        :id="'email-' + instanceId"
+        autocomplete="off"
+      />
+      <p class="error-message" v-show="errors.email">*Por favor, introduce un correo electrónico valido</p>
+    </div>
+    <div class="mb-3">
+      <label :for="'name-' + instanceId">Nombre:</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="formData.name"
+        :id="'name-' + instanceId"
+        autocomplete="off"
+      />
+      <p class="error-message" v-show="errors.name">*Por favor, introduce tu nombre</p>
+    </div>
+    <div class="mb-3">
+      <label :for="'firstSurname-' + instanceId">Primer Apellido:</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="formData.firstSurname"
+        :id="'firstSurname-' + instanceId"
+        autocomplete="off"
+      />
+      <p class="error-message" v-show="errors.firstSurname">*Por favor, introduce tu primer apellido</p>
+    </div>
+    <div class="mb-3">
+      <label :for="'secondSurname-' + instanceId">Segundo Apellido:</label>
+      <input
+        type="text"
+        class="form-control"
+        v-model="formData.secondSurname"
+        :id="'secondSurname-' + instanceId"
+        autocomplete="off"
+      />
+      <p class="error-message" v-show="errors.secondSurname">*Por favor, introduce tu segundo apellido</p>
+    </div>
+    <div class="mb-3">
+      <label :for="'description-' + instanceId">Mensaje:</label>
+      <textarea
+        class="form-control"
+        v-model="formData.description"
+        :id="'description-' + instanceId"
+        autocomplete="off"
+      ></textarea>
+    </div>
+    <div class="button-container">
+      <button class="btn btn-primary" @click="handleSubmit">
+        Enviar
+        <div v-if="isSending" class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
-        <div class="mb-3">
-          <label :for="'name-' + instanceId">Nombre:</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="formData.name"
-            :id="'name-' + instanceId"
-            autocomplete="off"
-          />
-          <p class="error-message" v-show="errors.name">*Por favor, introduce tu nombre</p>
-        </div>
-        <div class="mb-3">
-          <label :for="'firstSurname-' + instanceId">Primer Apellido:</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="formData.firstSurname"
-            :id="'firstSurname-' + instanceId"
-            autocomplete="off"
-          />
-          <p class="error-message" v-show="errors.firstSurname">*Por favor, introduce tu primer apellido</p>
-        </div>
-        <div class="mb-3">
-          <label :for="'secondSurname-' + instanceId">Segundo Apellido:</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="formData.secondSurname"
-            :id="'secondSurname-' + instanceId"
-            autocomplete="off"
-          />
-          <p class="error-message" v-show="errors.secondSurname">*Por favor, introduce tu segundo apellido</p>
-        </div>
-        <div class="mb-3">
-          <label :for="'description-' + instanceId">Mensaje:</label>
-          <textarea
-            class="form-control"
-            v-model="formData.description"
-            :id="'description-' + instanceId"
-            autocomplete="off"
-          ></textarea>
-        </div>
-        <div class="button-container">
-          <button class="btn btn-primary" @click="handleSubmit">
-            Enviar
-            <div v-if="isSending" class="spinner-border spinner-border-sm" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </button>
-        </div>
-      </div>
-    `,
+      </button>
+    </div>
+  </div>
+`,
           data() {
             return {
               baseUrl: "https://artemisaengine.com",
@@ -383,13 +346,7 @@
               if (Object.values(this.errors).every((e) => e === false)) {
                 // &&  Object.values(this.formData).every((e) => e !== "")
 
-                // const project = Cookies.get("project-selected");
-
-                // if (project) {
-                //   this.formData["projectName"] = JSON.parse(project).title;
-                // }
-
-                this.formData["projectName"] = ``;
+                this.formData["projectName"] = `{{cabezera_titulo|raw}}`;
 
                 this.isSending = true;
 
@@ -438,7 +395,7 @@
               urlImg: "https://forestbank.es/wp-content/uploads/2025/01/",
               isExpanded: false,
               contentHeight: "100px",
-              price: 150,
+              price: 100,
               quantity: 1,
               projectSelected: null,
               instanceId: elementId, // Cambiamos widgetId por instanceId
@@ -526,7 +483,6 @@
                 },
               });
             },
-
             openPriceAlert() {
               Swal.fire({
                 // icon: "warning",
@@ -561,21 +517,8 @@
                 this.quantity = 1;
               }
 
-              if (value > 100) {
-                this.quantity = 100;
-              }
-
-              // Lógica de precios según rango
-              if (value >= 1 && value <= 5) {
-                this.price = 150;
-              } else if (value >= 6 && value <= 10) {
-                this.price = 120;
-              } else if (value >= 11 && value <= 20) {
-                this.price = 100;
-              } else if (value >= 21 && value <= 50) {
-                this.price = 90;
-              } else if (value >= 51 && value <= 100) {
-                this.price = 80;
+              if (value > 10) {
+                this.quantity = 10;
               }
             },
           },
@@ -587,7 +530,7 @@
     function initEcologicalWidgets() {
       const widgets = document.querySelectorAll(".ecological-widget-container");
       widgets.forEach((widget, index) => {
-        const uniqueId = `eco-${index}`;
+        const uniqueId = `eco-${index}-${Date.now()}`;
         widget.id = uniqueId;
         new EcologicalWidget(uniqueId);
       });
@@ -742,7 +685,7 @@
 
       .widget {
         font-size: 17px;
-        /* max-width: 330px; */
+        max-width: 330px;
         position: relative;
 
         p {

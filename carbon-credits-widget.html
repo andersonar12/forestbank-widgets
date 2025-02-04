@@ -47,73 +47,75 @@
         </div>
       </div>
       <!-- Widget -->
-      <div class="col-12 col-md widget">
-        <div class="widget-container" id="floatingBox">
-          <!-- Precio -->
-          <div class="price d-flex justify-content-between">
-            <div class="w-50">
-              <p
-                class="text-black fw-bolder"
-                v-text="projectSelected ? projectSelected.title : 'Precio'"
-              ></p>
-              <img
-                v-show="projectSelected"
-                class="img-project"
-                :src="projectSelected && projectSelected.image"
-              />
-            </div>
-            <div class="text-end w-50">
-              <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
-              <span style="font-size: 13px; color: gray"
-                >Cada bono de carbono equivale a 1 tonelada de CO2
-              </span>
-            </div>
-          </div>
-
-          <hr />
-          <!-- Cantidad  -->
-          <div class="quantity d-flex justify-content-between w-100">
-            <p>Cantidad</p>
-
-            <div class="input-container">
-              <div class="input-group input-group-sm">
-                <button class="btn btn-light" type="button" @click="decrement">--</button>
-
-                <input type="number" v-model="quantity" class="form-control" placeholder="" />
-
-                <button class="btn btn-light" type="button" @click="increment">+</button>
+      <div class="col-12 col-md">
+        <div class="widget">
+          <div class="widget-container" id="floatingBox">
+            <!-- Precio -->
+            <div class="price d-flex justify-content-between">
+              <div class="w-50">
+                <p
+                  class="text-black fw-bolder"
+                  v-text="projectSelected ? projectSelected.title : 'Precio'"
+                ></p>
+                <img
+                  v-show="projectSelected"
+                  class="img-project"
+                  :src="projectSelected && projectSelected.image"
+                />
+              </div>
+              <div class="text-end w-50">
+                <p><span class="fw-bolder text-black" v-text="price + ' €'"></span> / bono CO2</p>
+                <span style="font-size: 13px; color: gray"
+                  >Cada bono de carbono equivale a 1 tonelada de CO2
+                </span>
               </div>
             </div>
-          </div>
-          <hr />
-          <!-- Available Stock  -->
-          <div class="d-flex justify-content-between">
-            <p>Stock disponible</p>
-            <p><span class="">7500</span> Tn</p>
-          </div>
-          <hr />
-          <!-- Rates  -->
-          <div class="d-flex justify-content-between">
-            <p>IVA (21%)</p>
-            <p v-text="IVA + ' €'"></p>
-          </div>
-          <hr />
-          <!-- Total  -->
-          <div class="d-flex justify-content-between">
-            <p>Total</p>
-            <p class="fw-bold text-black"><span v-text="total"></span> €</p>
-          </div>
 
-          <hr />
-          <!-- Buttons -->
-          <button class="buy-button btn btn-primary mb-3" @click="buyCarbonCredits()">
-            <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
-          </button>
+            <hr />
+            <!-- Cantidad  -->
+            <div class="quantity d-flex justify-content-between w-100">
+              <p>Cantidad</p>
 
-          <!-- Reservar -->
-          <button class="contact-button btn btn-outline-primary" @click="contactAlert()">
-            <span>Reservar</span> <span>➜</span>
-          </button>
+              <div class="input-container">
+                <div class="input-group input-group-sm">
+                  <button class="btn btn-light" type="button" @click="decrement">--</button>
+
+                  <input type="number" v-model="quantity" class="form-control" placeholder="" />
+
+                  <button class="btn btn-light" type="button" @click="increment">+</button>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <!-- Available Stock  -->
+            <div class="d-flex justify-content-between">
+              <p>Stock disponible</p>
+              <p><span class="">7500</span> Tn</p>
+            </div>
+            <hr />
+            <!-- Rates  -->
+            <div class="d-flex justify-content-between">
+              <p>IVA (21%)</p>
+              <p v-text="IVA + ' €'"></p>
+            </div>
+            <hr />
+            <!-- Total  -->
+            <div class="d-flex justify-content-between">
+              <p>Total</p>
+              <p class="fw-bold text-black"><span v-text="total"></span> €</p>
+            </div>
+
+            <hr />
+            <!-- Buttons -->
+            <button class="buy-button btn btn-primary mb-3" @click="buyCarbonCredits()">
+              <span>Comprar</span> <span class="" v-text="total + ' €'"></span>
+            </button>
+
+            <!-- Reservar -->
+            <button class="contact-button btn btn-outline-primary" @click="contactAlert()">
+              <span>Reservar</span> <span>➜</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
