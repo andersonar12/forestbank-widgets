@@ -18,11 +18,7 @@
       <div class="row">
         <div class="col-12">
           <div class="row d-flex justify-content-around">
-            <div
-              class="col-6 col-sm col-md-4 image-container"
-              v-for="(image, index) in images"
-              :key="index"
-            >
+            <div class="col-6 col-md image-container" v-for="(image, index) in images" :key="index">
               <img :src="urlBase + image.imgUrl" class="img-fluid" alt="Han confiado en nosotros" />
             </div>
           </div>
@@ -41,7 +37,6 @@
         return {
           urlBase: "https://forestbank.es/wp-content/uploads/2025/03/",
           images: [
-            { imgUrl: "valdesc_resized.png", urlPage: "" },
             { imgUrl: "tecnala_resized.png", urlPage: "" },
             { imgUrl: "holcim_resized.png", urlPage: "" },
             { imgUrl: "sika_resized.png", urlPage: "" },
@@ -50,8 +45,9 @@
             { imgUrl: "plant-for-planet_resized.png", urlPage: "" },
             { imgUrl: "download_resized.png", urlPage: "" },
             { imgUrl: "imdea_resized.png", urlPage: "" },
+            { imgUrl: "valdesc_resized.png", urlPage: "" },
             { imgUrl: "frs_resized.png", urlPage: "" },
-            { imgUrl: "instituto-eduardo-torroja_resized.png", urlPage: "" },
+            { imgUrl: "instituto-eduardo-torroja_2.png", urlPage: "" },
             { imgUrl: "eu-missions.png", urlPage: "" },
             { imgUrl: "hormi-cruz_resized.png", urlPage: "" },
             { imgUrl: "surge_resized.png", urlPage: "" },
@@ -74,14 +70,14 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 15px;
-        min-width: 300px;
-        /* max-width: 200px;
+        min-width: 230px;
+        max-width: 230px;
         min-height: 150px;
-        max-height: 150px; */
+        max-height: 150px;
 
         img {
-          max-width: 300px;
-          max-height: 130px;
+          /* max-width: 300px; */
+          max-height: 100px;
         }
       }
     }
